@@ -1,0 +1,100 @@
+-----------------------------------
+CakePHP Qdmailer Component
+-----------------------------------
+
+This is a component to send email with Qdmail Library (http://hal456.net/qdmail ).
+Requires CakePHP >= 1.2.
+
+
+Installation
+------------------------------
+
+Copy qdmail.php and qdsmtp.php (if necessary) to your vendors directory
+and qdmailer.php to controllers/components directory.
+
+
+Configuration
+------------------------------
+
+There are three ways to configure Qdmailer.
+
+
+* Application-level configuration
+
+Cake's Configure class can be used to set application-level settings.
+You can just call Configure::write with the key 'Qdmailer' in bootstrap.php.
+
+<code>
+Configure::write('Qdmailer',
+                 array('is_qmail' => false,
+                       'logLevel' => 1,
+                       'errorlogLevel' => 2));
+</code>
+
+Note that this is the only way to set 'is_qmail' parameter, and I strongly
+recommend you to set it explicitly. For more about 'is_qmail', see the comments
+in the source.
+
+
+* Controller-level Configuration
+
+The parameters in the $components variable are merged with the application-level
+settings, and then applied to the Qdmailer instance in the initialize callback.
+
+<code>
+class FooController extends AppController
+{
+  var $components = array('Qdmailer' =>
+                            array('logLevel' => 2,
+                                  'logFilename' => 'qdmailer-foo.log',
+                                  'errorlogLevel' => 2));
+}
+</code>
+
+
+* Local configuration
+
+You can also use the option method and some other methods defined in the Qdmail
+when the Qdmailer instance is available.
+
+<code>
+class FooController extends AppController
+{
+  var $components = array('Qdmailer');
+
+  function action()
+    $this->Qdmailer->option(array('logLevel' => 2));
+    $this->Qdmailer->wrapWidth(50);
+  }
+}
+</code>
+
+
+Usage
+------------------------------
+
+After configuration, the usage is almost the same as QdmailComponent bundled with
+the Qdmail Library. See http://hal456.net/qdmail/cakephp .
+
+<code>
+$this->Qdmailer->to('address@example.com' , 'Recipient Name');
+$this->Qdmailer->subject('Qdmail on CakePHP');
+$this->Qdmailer->from('from@example.com' , 'Sender Name');
+$this->Qdmailer->cakeText('use template', 'test_template');
+$this->Qdmailer->send();
+</code>
+
+
+Sending mail through SMTP
+------------------------------
+
+If Qdsmtp (http://hal456.net/qdsmtp ) is installed, you can send mail through SMTP.
+This is a configuration example.
+
+<code>
+Configure::write('Qdmailer', array('is_qmail' => false,
+                                   'smtp' => true,
+                                   'smtpLoglevelLink' => true,
+                                   'smtpServer' => array('host' => 'mail.example.com',
+                                                         'protocol' => 'SMTP')));
+</code>

@@ -1,0 +1,107 @@
+-----------------------------------
+CakePHP Qdmailer コンポーネント
+-----------------------------------
+
+Qdmail (http://hal456.net/qdmail ) を使ってメールを送信するための
+コンポーネントです。CakePHP 1.2以上を必要とします。
+
+
+インストール
+------------------------------
+
+Qdmailの配布物に含まれる qdmail.php および
+Qdsmtpの配布物に含まれる qdsmtp.php （SMTP送信を行う場合）を
+vendorsディレクトリにコピーしてください。
+qdmailer.php はcontrollers/componentsにコピーしてください。
+
+
+設定
+------------------------------
+
+Qdmailerには3種類の設定方法があります。
+
+* アプリケーション全体に適用される設定
+
+アプリケーション全体に適用される設定を行うには、CakePHPのConfigureクラスを
+使用します。Configureクラスのwriteメソッドを用いて、'Qdmailer'というキーで
+設定を行ってください。
+通常はbootstrap.phpの中で行うことになると思います。
+
+<code>
+Configure::write('Qdmailer',
+                 array('is_qmail' => false,
+                       'logLevel' => 1,
+                       'errorlogLevel' => 2));
+</code>
+
+なおis_qmail（qmailを使用しているか否か）を設定するにはこの方法しかありません。
+いくつかの理由により、is_qmailは明示的に設定しておくことを強く強く推奨します。
+詳細についてはソース中のコメントを読んでください。
+
+
+* コントローラ全体に適用される設定
+
+コントローラの$components変数で指定したパラメータは、
+アプリケーションレベルの設定値とマージされ、
+Qdmailerコンポーネントに設定されて、コントローラ全体に適用される設定となります。
+
+
+<code>
+class FooController extends AppController
+{
+  var $components = array('Qdmailer' =>
+                            array('logLevel' => 2,
+                                  'logFilename' => 'qdmailer-foo.log',
+                                  'errorlogLevel' => 2));
+}
+</code>
+
+
+* ローカルな設定
+
+QdmailerComponentのインスタンスにアクセスできる状況ならば
+（例えばアクションメソッドの中や他のコンポーネントの中など）
+普通にQdmailのメソッドを使って設定を変更することができます。
+
+<code>
+class FooController extends AppController
+{
+  var $components = array('Qdmailer');
+
+  function action()
+    $this->Qdmailer->option(array('logLevel' => 2));
+    $this->Qdmailer->wrapWidth(50);
+  }
+}
+</code>
+
+
+使い方
+------------------------------
+
+設定後の使い方は、Qdmail本体に含まれるQdmailコンポーネントと基本的に同じです。
+Qdmailコンポーネントの使い方については http://hal456.net/qdmail/cakephp を
+参照してください。
+
+<code>
+$this->Qdmailer->to('address@example.com' , 'Recipient Name');
+$this->Qdmailer->subject('Qdmail on CakePHP');
+$this->Qdmailer->from('from@example.com' , 'Sender Name');
+$this->Qdmailer->cakeText('use template', 'test_template');
+$this->Qdmailer->send();
+</code>
+
+
+SMTPを通したメール送信
+------------------------------
+
+Qdsmtp (http://hal456.net/qdsmtp ) をインストールすると、
+SMTPを通した送信が可能になります。設定例は次の通りです。
+
+<code>
+Configure::write('Qdmailer', array('is_qmail' => false,
+                                   'smtp' => true,
+                                   'smtpLoglevelLink' => true,
+                                   'smtpServer' => array('host' => 'mail.example.com',
+                                                         'protocol' => 'SMTP')));
+</code>
