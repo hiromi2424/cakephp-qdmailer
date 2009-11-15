@@ -5,6 +5,16 @@
  * This is a component to send email using
  * the Qdmail Library (http://hal456.net/qdmail ).
  * Basic usage is almost the same as built-in QdmailComponent.
+ * 
+ * Copyright 2008, Spok in japan , tokyo
+ * hal456.net/qdmail    :  http://hal456.net/qdmail/
+ * & CPA-LAB/Technical  :  http://www.cpa-lab.com/tech/
+ * Licensed under The MIT License License
+ *
+ * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
+ * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
  *
  * @author Takayuki Miwa <i@tkyk.name>
  * @link http://wp.serpere.info
@@ -98,6 +108,7 @@ class QdmailerComponent extends QdmailComponent
    * 
    * This code is copied from the EmailComponent class.
    * 
+   * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
    * @return object View
    * @access protected
    */
