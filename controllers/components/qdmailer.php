@@ -75,7 +75,9 @@ class QdmailerComponent extends QdmailComponent
     if(!is_null($is_qmail)) {
       $this->is_qmail = $is_qmail;
     }
-    Configure::delete('Qdmailer.is_qmail');
+    if(!is_null(Configure::read('Qdmailer'))) {
+      Configure::delete('Qdmailer.is_qmail');
+    }
 
     return parent::isQmail();
   }
