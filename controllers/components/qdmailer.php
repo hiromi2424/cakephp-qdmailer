@@ -91,6 +91,7 @@ class QdmailerComponent extends QdmailComponent
   function initialize(&$controller, $settings=array())
   {
     $this->option(am(self::_getGlobalConfig(), $settings));
+    $this->Controller =& $controller;
   }
 
   /**
@@ -102,7 +103,6 @@ class QdmailerComponent extends QdmailComponent
    */
   function startup(&$controller)
   {
-    $this->Controller =& $controller;
   }
 
   /**
